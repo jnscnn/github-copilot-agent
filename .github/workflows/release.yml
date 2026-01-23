@@ -5,10 +5,10 @@ on:
     branches:
       - main
     paths-ignore:
-      - '**.md'
-      - 'LICENSE'
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.github/PULL_REQUEST_TEMPLATE.md'
+      - "**.md"
+      - "LICENSE"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/PULL_REQUEST_TEMPLATE.md"
 
 permissions:
   contents: write
@@ -40,19 +40,19 @@ jobs:
           else
             COMMITS=$(git log ${{ steps.get_latest_tag.outputs.latest_tag }}..HEAD --pretty=format:"%s")
           fi
-          
+
           echo "Commits since last tag:"
           echo "$COMMITS"
-          
+
           # Determine bump type based on conventional commits
           BUMP="patch"
-          
+
           if echo "$COMMITS" | grep -qiE "^(feat|feature)(\(.+\))?!:|^BREAKING CHANGE:|breaking:"; then
             BUMP="major"
           elif echo "$COMMITS" | grep -qiE "^(feat|feature)(\(.+\))?:"; then
             BUMP="minor"
           fi
-          
+
           echo "bump=$BUMP" >> $GITHUB_OUTPUT
           echo "Version bump type: $BUMP"
 
@@ -61,16 +61,16 @@ jobs:
         run: |
           LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
           BUMP="${{ steps.version_bump.outputs.bump }}"
-          
+
           # Remove 'v' prefix if present
           VERSION=${LATEST_TAG#v}
-          
+
           # Split version into parts
           IFS='.' read -r -a VERSION_PARTS <<< "$VERSION"
           MAJOR="${VERSION_PARTS[0]:-0}"
           MINOR="${VERSION_PARTS[1]:-0}"
           PATCH="${VERSION_PARTS[2]:-0}"
-          
+
           # Bump version
           if [ "$BUMP" = "major" ]; then
             MAJOR=$((MAJOR + 1))
@@ -82,7 +82,7 @@ jobs:
           else
             PATCH=$((PATCH + 1))
           fi
-          
+
           NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "New version: $NEW_VERSION"
@@ -92,10 +92,10 @@ jobs:
         run: |
           LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
           NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
-          
+
           echo "# Release $NEW_VERSION" > CHANGELOG.md
           echo "" >> CHANGELOG.md
-          
+
           if [ "$LATEST_TAG" = "v0.0.0" ]; then
             echo "## Initial Release" >> CHANGELOG.md
             echo "" >> CHANGELOG.md
@@ -121,29 +121,29 @@ jobs:
               fi
             done
           fi
-          
+
           # Read changelog into output
           CHANGELOG=$(cat CHANGELOG.md)
           echo "changelog<<EOF" >> $GITHUB_OUTPUT
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          
+
           cat CHANGELOG.md
 
       - name: Check if release needed
         id: check_release
         run: |
           LATEST_TAG="${{ steps.get_latest_tag.outputs.latest_tag }}"
-          
+
           # Count commits since last tag
           if [ "$LATEST_TAG" = "v0.0.0" ]; then
             COMMIT_COUNT=$(git rev-list --count HEAD)
           else
             COMMIT_COUNT=$(git rev-list --count $LATEST_TAG..HEAD)
           fi
-          
+
           echo "Commits since last release: $COMMIT_COUNT"
-          
+
           if [ "$COMMIT_COUNT" -eq 0 ]; then
             echo "needs_release=false" >> $GITHUB_OUTPUT
             echo "No new commits, skipping release"
@@ -163,6 +163,31 @@ jobs:
           body: ${{ steps.changelog.outputs.changelog }}
           draft: false
           prerelease: false
+
+      - name: Update CHANGELOG.md
+        if: steps.check_release.outputs.needs_release == 'true'
+        run: |
+          NEW_VERSION="${{ steps.new_version.outputs.new_version }}"
+          DATE=$(date +%Y-%m-%d)
+
+          # Create entry for CHANGELOG.md
+          echo "## [$NEW_VERSION] - $DATE" > /tmp/changelog_entry.md
+          echo "" >> /tmp/changelog_entry.md
+          cat CHANGELOG.md >> /tmp/changelog_entry.md
+          echo "" >> /tmp/changelog_entry.md
+
+          # Insert after the "Unreleased" section
+          sed -i.bak '/^---$/r /tmp/changelog_entry.md' CHANGELOG.md
+          rm CHANGELOG.md.bak
+
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Commit and push
+          git add CHANGELOG.md
+          git commit -m "chore: update CHANGELOG for $NEW_VERSION [skip ci]"
+          git push origin main
 
       - name: Summary
         if: steps.check_release.outputs.needs_release == 'true'

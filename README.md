@@ -2,7 +2,11 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub release](https://img.shields.io/github/v/release/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/releases)
+[![Release Workflow](https://github.com/trsdn/github-copilot-agent/actions/workflows/release.yml/badge.svg)](https://github.com/trsdn/github-copilot-agent/actions/workflows/release.yml)
+[![Validate Workflow](https://github.com/trsdn/github-copilot-agent/actions/workflows/validate.yml/badge.svg)](https://github.com/trsdn/github-copilot-agent/actions/workflows/validate.yml)
 [![GitHub stars](https://img.shields.io/github/stars/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/issues)
 
 This repository is a **blueprint for building GitHub Copilot / VS Code Copilot customizations using Copilot itself**.
 
@@ -225,6 +229,19 @@ Contributions are welcome! Here's how you can help:
 4. **Spread the word** - Star the repo and share it with others
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
+
+## Repository Analytics
+
+Track the project's growth and community engagement:
+
+- **[GitHub Insights](https://github.com/trsdn/github-copilot-agent/pulse)** - Activity overview and pulse
+- **[Contributor Stats](https://github.com/trsdn/github-copilot-agent/graphs/contributors)** - See who's contributing
+- **[Traffic](https://github.com/trsdn/github-copilot-agent/graphs/traffic)** - Views and clones (maintainers only)
+- **[Community](https://github.com/trsdn/github-copilot-agent/community)** - Community standards checklist
+
+### Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=trsdn/github-copilot-agent&type=Date)](https://star-history.com/#trsdn/github-copilot-agent&Date)
 
 ## Not an official template
 
