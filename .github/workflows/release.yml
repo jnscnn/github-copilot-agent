@@ -264,10 +264,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Commit and push
-          git add CHANGELOG.md
-          git commit -m "chore: update CHANGELOG for $NEW_VERSION [skip ci]"
-          git push origin main
+          # Commit and push only if there are changes
+          if git diff --quiet CHANGELOG.md; then
+            echo "No changes to CHANGELOG.md, skipping commit"
+          else
+            git add CHANGELOG.md
+            git commit -m "chore: update CHANGELOG for $NEW_VERSION [skip ci]"
+            git push origin main
+          fi
 
       - name: Summary
         if: steps.check_release.outputs.needs_release == 'true'
