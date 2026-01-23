@@ -1,4 +1,3 @@
-```prompt
 ---
 description: Scaffold a new Agent Skill (SKILL.md) for VS Code and GitHub Copilot
 name: New Skill
@@ -52,4 +51,3 @@ When done, explain:
 - Reference skills: https://github.com/anthropics/skills
 - Awesome Copilot: https://github.com/github/awesome-copilot
 
-```

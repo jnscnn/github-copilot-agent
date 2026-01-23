@@ -205,3 +205,27 @@ Enable all experimental features:
 | 1.102 | MCP servers, AGENTS.md |
 | 1.99 | Prompt files, instructions files |
 | 1.95 | copilot-instructions.md |
+
+## Usage
+
+When a user reports a feature not working or asks about compatibility:
+
+1. **Check their VS Code version** - Ask them to run `code --version` or check Help → About
+2. **Verify required settings** - Use the settings quick reference above to identify which experimental flags need to be enabled
+3. **Check feature availability** - Cross-reference with the version history to see if the feature exists in their version
+4. **Provide solution** - Guide them to either update VS Code or enable the necessary settings
+
+### Examples
+
+#### Example 1: Agent Skills not working
+
+- Check: VS Code version ≥ 1.108
+- Setting: `"chat.useAgentSkills": true`
+- Solution: Update to 1.108+ and enable the setting
+
+#### Example 2: Custom agents not appearing
+
+- Check: VS Code version ≥ 1.106
+- Setting: `"chat.useAgentsMdFile": true`
+- File: `.github/AGENTS.md` or `.github/agents/*.agent.md` exists
+- Solution: Verify setting is enabled and file structure is correct
