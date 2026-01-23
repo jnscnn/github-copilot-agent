@@ -19,6 +19,7 @@ This skill helps diagnose and verify VS Code / GitHub Copilot feature compatibil
 When diagnosing issues, consult these sources for the latest information:
 
 ### VS Code Release Notes
+
 - [VS Code 1.108 Release Notes](https://code.visualstudio.com/updates/v1_108)
 - [VS Code 1.107 Release Notes](https://code.visualstudio.com/updates/v1_107)
 - [VS Code 1.106 Release Notes](https://code.visualstudio.com/updates/v1_106)
@@ -31,6 +32,7 @@ When diagnosing issues, consult these sources for the latest information:
 - [All VS Code Updates](https://code.visualstudio.com/updates)
 
 ### Copilot Customization Documentation
+
 - [Customization Overview](https://code.visualstudio.com/docs/copilot/customization/overview)
 - [Custom Instructions](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
 - [Custom Agents](https://code.visualstudio.com/docs/copilot/customization/custom-agents)
@@ -40,26 +42,31 @@ When diagnosing issues, consult these sources for the latest information:
 - [Language Models](https://code.visualstudio.com/docs/copilot/customization/language-models)
 
 ### Agents Documentation
+
 - [Agents Overview](https://code.visualstudio.com/docs/copilot/agents/overview)
 - [Background Agents](https://code.visualstudio.com/docs/copilot/agents/background-agents)
 - [Cloud Agents](https://code.visualstudio.com/docs/copilot/agents/cloud-agents)
 
 ### Chat & Tools Documentation
+
 - [Chat Tools](https://code.visualstudio.com/docs/copilot/chat/chat-tools)
 - [Chat Sessions](https://code.visualstudio.com/docs/copilot/chat/chat-sessions)
 - [Copilot Chat Context](https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context)
 
 ### Security & Troubleshooting
+
 - [Security Considerations](https://code.visualstudio.com/docs/copilot/security)
 - [Copilot Issues Wiki](https://github.com/microsoft/vscode/wiki/Copilot-Issues)
 - [VS Code Settings Reference](https://code.visualstudio.com/docs/getstarted/settings)
 
 ### GitHub Copilot Documentation
+
 - [GitHub Copilot Docs](https://docs.github.com/en/copilot)
 - [Custom Agents (GitHub)](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents)
 - [Coding Agent](https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent)
 
 ### Community Resources
+
 - [Awesome Copilot Repository](https://github.com/github/awesome-copilot)
 - [Agent Skills Standard](https://agentskills.io/)
 - [Anthropic Skills Repository](https://github.com/anthropics/skills)
@@ -113,6 +120,7 @@ When diagnosing issues, consult these sources for the latest information:
 ### Step 1: Check VS Code Version
 
 Ask the user to run:
+
 ```
 code --version
 ```
