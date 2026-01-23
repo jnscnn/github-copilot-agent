@@ -1,5 +1,5 @@
 ---
-name: copilot-audit
+name: copilot-setup-audit
 description: Audit repository Copilot customization setup. Use this skill to analyze existing configuration, identify missing files, check for best practices, and suggest improvements for agents, prompts, instructions, and skills.
 ---
 

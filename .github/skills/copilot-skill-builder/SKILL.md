@@ -1,5 +1,5 @@
 ---
-name: skill-builder
+name: copilot-skill-builder
 description: Create and maintain Agent Skills for VS Code and GitHub Copilot. Use this skill when setting up new skills, skill directories, or SKILL.md files. Helps scaffold project skills in .github/skills/ or personal skills in ~/.copilot/skills/.
 ---
 

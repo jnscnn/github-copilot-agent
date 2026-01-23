@@ -1,5 +1,5 @@
 ---
-name: customization-selector
+name: copilot-customization-selector
 description: Help decide which GitHub Copilot customization to use (instructions, prompts, agents, or skills). Use this skill when users ask which customization type to create, want to understand the differences, or need guidance choosing between .instructions.md, .prompt.md, .agent.md, or SKILL.md files.
 ---
 

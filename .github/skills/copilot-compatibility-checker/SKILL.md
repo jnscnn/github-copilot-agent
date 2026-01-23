@@ -1,5 +1,5 @@
 ---
-name: compatibility-checker
+name: copilot-compatibility-checker
 description: Check VS Code and GitHub Copilot feature compatibility. Use this skill when diagnosing why a feature isn't working, checking required settings, or verifying version requirements for experimental features.
 ---
 

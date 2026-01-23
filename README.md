@@ -23,18 +23,30 @@ The intent is to keep everything **in-repo**, versioned, reviewable, and easy to
 
 ## Table of Contents
 
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [What's in here](#whats-in-here)
-  - [Custom agent](#custom-agent)
-  - [Prompt templates](#prompt-templates-invoked-via-)
-  - [Agent Skills](#agent-skills)
-- [Quickstart](#quickstart-use-copilot-to-generate-copilot-customizations)
-- [Where to put things](#where-to-put-things-repo-conventions)
-- [Keeping your repositories in sync](#keeping-your-repositories-in-sync)
-- [Notes on tools and safety](#notes-on-tools-and-safety)
-- [Contributing](#contributing)
-- [License](#license)
+- [github-copilot-agent](#github-copilot-agent)
+  - [Table of Contents](#table-of-contents)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+    - [Quick Install (Recommended)](#quick-install-recommended)
+    - [Git Subtree (For ongoing updates)](#git-subtree-for-ongoing-updates)
+    - [Git Submodule](#git-submodule)
+    - [GitHub Actions (Automated sync)](#github-actions-automated-sync)
+  - [What’s in here](#whats-in-here)
+    - [Custom agent](#custom-agent)
+    - [Prompt templates (invoked via `/...`)](#prompt-templates-invoked-via-)
+    - [Agent Skills](#agent-skills)
+  - [Quickstart: use Copilot to generate Copilot customizations](#quickstart-use-copilot-to-generate-copilot-customizations)
+    - [Typical workflow](#typical-workflow)
+  - [Where to put things (repo conventions)](#where-to-put-things-repo-conventions)
+  - [Keeping your repositories in sync](#keeping-your-repositories-in-sync)
+    - [Manual Updates](#manual-updates)
+    - [Automated Sync with GitHub Actions](#automated-sync-with-github-actions)
+  - [Notes on tools and safety](#notes-on-tools-and-safety)
+  - [Contributing](#contributing)
+  - [Repository Analytics](#repository-analytics)
+    - [Star History](#star-history)
+  - [Not an official template](#not-an-official-template)
+  - [License](#license)
 
 ---
 
@@ -100,24 +112,24 @@ See [Keeping your repositories in sync](#keeping-your-repositories-in-sync) for 
 
 ### Prompt templates (invoked via `/...`)
 
-- `.github/prompts/new-prompt-file.prompt.md`
+- `.github/prompts/copilot-new-prompt.prompt.md`
   - Creates a new reusable prompt file in `.github/prompts/<slug>.prompt.md`
-- `.github/prompts/new-custom-agent.prompt.md`
+- `.github/prompts/copilot-new-agent.prompt.md`
   - Creates a new custom agent profile in `.github/agents/<slug>.agent.md`
-- `.github/prompts/new-instructions-file.prompt.md`
+- `.github/prompts/copilot-new-instructions.prompt.md`
   - Creates a new scoped instructions file in `.github/instructions/<slug>.instructions.md`
-- `.github/prompts/new-skill.prompt.md`
+- `.github/prompts/copilot-new-skill.prompt.md`
   - Creates a new Agent Skill in `.github/skills/<name>/SKILL.md`
 
 ### Agent Skills
 
-- `.github/skills/skill-builder/SKILL.md`
+- `.github/skills/copilot-skill-builder/SKILL.md`
   - A meta-skill that teaches how to create and maintain Agent Skills
   - Includes best practices, SKILL.md format, and examples
-- `.github/skills/compatibility-checker/SKILL.md`
+- `.github/skills/copilot-compatibility-checker/SKILL.md`
   - Diagnose VS Code/Copilot feature compatibility
   - Check required settings, version requirements, and troubleshoot issues
-- `.github/skills/copilot-audit/SKILL.md`
+- `.github/skills/copilot-setup-audit/SKILL.md`
   - Audit repository Copilot setup and suggest improvements
   - Comprehensive checklists for agents, prompts, instructions, skills, settings
 
@@ -127,12 +139,12 @@ See [Keeping your repositories in sync](#keeping-your-repositories-in-sync) for 
 2. Open **Copilot Chat**.
 3. In the agents dropdown, select **Copilot Customization Builder**.
 4. Run one of the included prompt templates by typing:
-   - `/new-prompt-file`
-   - `/new-custom-agent`
-   - `/new-instructions-file`
-   - `/new-skill`
-   - `/check-compatibility` - diagnose feature issues
-   - `/audit-copilot-setup` - audit repo setup and get recommendations
+   - `/copilot-new-prompt`
+   - `/copilot-new-agent`
+   - `/copilot-new-instructions`
+   - `/copilot-new-skill`
+   - `/copilot-check-compatibility` - diagnose feature issues
+   - `/copilot-audit-setup` - audit repo setup and get recommendations
 
 Copilot Chat will ask you for the required `${input:...}` values (slug, display name, description, tool list, etc.), then generate the file(s) in the correct location.
 
