@@ -50,9 +50,10 @@ What do you want to achieve?
 
 ## Detailed Guidance
 
-### Use Custom Instructions when:
+### Use Custom Instructions when
 
 **Perfect for:**
+
 - Enforcing coding standards across all requests
 - Setting language/framework conventions (e.g., "always use TypeScript strict mode")
 - Defining commit message or PR description guidelines
@@ -60,6 +61,7 @@ What do you want to achieve?
 - Sharing team coding practices in version control
 
 **File types:**
+
 | File | Location | Behavior |
 |------|----------|----------|
 | `copilot-instructions.md` | `.github/` | Applies to all requests |
@@ -67,6 +69,7 @@ What do you want to achieve?
 | `AGENTS.md` | Root or subfolders | Multi-agent compatible |
 
 **Example use cases:**
+
 - "Always use functional React components"
 - "Follow PEP 8 for Python files"
 - "Include JSDoc comments for all public functions"
@@ -74,9 +77,10 @@ What do you want to achieve?
 
 ---
 
-### Use Prompt Files when:
+### Use Prompt Files when
 
 **Perfect for:**
+
 - Creating reusable workflows (e.g., `/create-react-form`, `/security-review`)
 - Scaffolding components, API routes, or modules
 - Generating tests with consistent patterns
@@ -84,12 +88,14 @@ What do you want to achieve?
 - Need to specify tools and agent for a specific task
 
 **Key features:**
+
 - Invoked with `/promptName` in chat
 - Can specify `agent`, `tools`, and `model` in frontmatter
 - Support variables like `${selection}`, `${file}`, `${input:name}`
 - Can reference instruction files for consistent guidelines
 
 **Example use cases:**
+
 - `/create-component` - Generate a new React component with tests
 - `/code-review` - Perform a security-focused code review
 - `/api-route` - Scaffold a new API endpoint
@@ -97,9 +103,10 @@ What do you want to achieve?
 
 ---
 
-### Use Custom Agents when:
+### Use Custom Agents when
 
 **Perfect for:**
+
 - Creating specialized AI personas (planner, reviewer, architect)
 - Restricting available tools (e.g., read-only for planning)
 - Defining sequential workflows with **handoffs**
@@ -107,12 +114,14 @@ What do you want to achieve?
 - Using a specific model for certain tasks
 
 **Key features:**
+
 - Define `tools` list to control what the agent can do
 - Use `handoffs` for guided multi-step workflows
 - Specify `model` for optimal performance per task
 - Set `infer: false` to prevent use as subagent
 
 **Example agents:**
+
 - **Planner** - Read-only tools, generates implementation plans
 - **Reviewer** - Focus on security vulnerabilities and code quality
 - **Architect** - Design patterns and system architecture decisions
@@ -120,9 +129,10 @@ What do you want to achieve?
 
 ---
 
-### Use Agent Skills when:
+### Use Agent Skills when
 
 **Perfect for:**
+
 - Creating capabilities that work across VS Code, CLI, and coding agent
 - Need to include scripts, examples, or resources
 - Building specialized testing/debugging/deployment workflows
@@ -130,12 +140,14 @@ What do you want to achieve?
 - Want progressive loading (only loaded when relevant)
 
 **Key features:**
+
 - Open standard at [agentskills.io](https://agentskills.io/)
 - Three-level loading: discovery → instructions → resources
 - Can include scripts, templates, and example files
 - Works across GitHub Copilot in VS Code, CLI, and coding agent
 
 **Example skills:**
+
 - `webapp-testing` - Testing workflows with test templates
 - `github-actions-debug` - Debug CI/CD workflows with log analysis
 - `api-documentation` - Generate OpenAPI specs with examples
@@ -194,16 +206,19 @@ What do you want to achieve?
 ## Common Combinations
 
 ### Planning → Implementation Workflow
+
 1. **Agent**: `planner.agent.md` with read-only tools
 2. **Handoff**: Button to switch to implementation agent
 3. **Instructions**: Shared coding standards apply to both
 
 ### Consistent Test Generation
+
 1. **Skill**: `webapp-testing` with test templates and utilities
 2. **Prompt**: `/generate-tests` that references the skill patterns
 3. **Instructions**: Test naming conventions and coverage requirements
 
 ### Security-First Development
+
 1. **Instructions**: Security guidelines applied globally
 2. **Agent**: `security-reviewer.agent.md` for dedicated reviews
 3. **Prompt**: `/security-audit` for on-demand security checks
