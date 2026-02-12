@@ -4,6 +4,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/releases)
 [![Release Workflow](https://github.com/trsdn/github-copilot-agent/actions/workflows/release.yml/badge.svg)](https://github.com/trsdn/github-copilot-agent/actions/workflows/release.yml)
 [![Validate Workflow](https://github.com/trsdn/github-copilot-agent/actions/workflows/validate.yml/badge.svg)](https://github.com/trsdn/github-copilot-agent/actions/workflows/validate.yml)
+[![Commit Lint](https://github.com/trsdn/github-copilot-agent/actions/workflows/commit-lint.yml/badge.svg)](https://github.com/trsdn/github-copilot-agent/actions/workflows/commit-lint.yml)
 [![GitHub stars](https://img.shields.io/github/stars/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/trsdn/github-copilot-agent)](https://github.com/trsdn/github-copilot-agent/issues)
@@ -63,7 +64,21 @@ Before using this blueprint, ensure you have:
 
 There are several ways to integrate this blueprint into your projects:
 
-### Quick Install (Recommended)
+### Use as Template (Recommended)
+
+Use the dedicated **template repository** — a clean, lean version without blueprint-specific files:
+
+**[trsdn/github-copilot-agent-template](https://github.com/trsdn/github-copilot-agent-template)** — Click **"Use this template"** on GitHub.
+
+Then:
+
+```bash
+git clone https://github.com/YOUR-USERNAME/your-new-repo.git
+cd your-new-repo
+./scripts/setup-hooks.sh
+```
+
+### Quick Install (Add to existing project)
 
 Clone this repository directly or use our installation script:
 

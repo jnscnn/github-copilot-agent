@@ -125,6 +125,21 @@ if [ "$INSTALL_SKILLS" = true ]; then
     fi
 fi
 
+# Install git hooks for conventional commits
+if [ -d "$TEMP_DIR/.githooks" ]; then
+    echo -e "${BLUE}→ Installing git hooks...${NC}"
+    mkdir -p .githooks
+    cp -r "$TEMP_DIR/.githooks/"* .githooks/ 2>/dev/null || true
+    chmod +x .githooks/*
+    
+    mkdir -p scripts
+    cp "$TEMP_DIR/scripts/setup-hooks.sh" scripts/ 2>/dev/null || true
+    chmod +x scripts/setup-hooks.sh 2>/dev/null || true
+    
+    git config core.hooksPath .githooks
+    echo -e "${GREEN}  ✓ Git hooks installed (Conventional Commits enforced)${NC}"
+fi
+
 # Cleanup
 rm -rf "$TEMP_DIR"
 

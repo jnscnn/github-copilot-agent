@@ -2,7 +2,8 @@
 description: Create and maintain Copilot customizations (agents, prompt files, instructions, skills, MCP) for VS Code and GitHub Copilot
 name: Copilot Customization Builder
 tools: ['search', 'fetch', 'editFiles', 'runCommand', 'runSubagent']
-infer: true
+user-invokable: true
+disable-model-invocation: false
 ---
 # Copilot Customization Builder
 
@@ -39,7 +40,7 @@ When a user asks for a new customization, do this:
    - Match naming, tool naming, and tone.
 
 3. **Design before writing files**
-   - Draft the frontmatter: `name`, `description`, `tools`, optional `model`, optional `infer`, optional `target`, optional `handoffs`.
+   - Draft the frontmatter: `name`, `description`, `tools`, optional `model`, optional `user-invokable`, optional `disable-model-invocation`, optional `agents`, optional `target`, optional `handoffs`.
    - Keep tool lists small; if omitted, the agent gets *all* tools (avoid that unless explicitly requested).
 
 4. **Implement incrementally**
@@ -60,11 +61,19 @@ When a user asks for a new customization, do this:
 - The filename should be a stable slug.
 
 Frontmatter guidelines:
+
 - `description` is required.
 - `name` is strongly recommended.
 - `tools` is recommended to be explicit.
+- `agents` controls which agents can be used as subagents (use `*` for all, `[]` for none).
+- `user-invokable` (default `true`) controls visibility in the agents dropdown. Set to `false` for subagent-only agents.
+- `disable-model-invocation` (default `false`) prevents the agent from being invoked as a subagent.
+- `argument-hint` provides hint text in the chat input field.
 - `target` can be `vscode` or `github-copilot` to restrict availability; omit to allow both.
+- `mcp-servers` can specify MCP server configs for GitHub Copilot coding agent.
 - Agent prompt text must remain under the applicable limits (keep it tight and modular).
+
+> **Deprecated:** `infer` is deprecated. Use `user-invokable` and `disable-model-invocation` instead.
 
 ### Prompt files
 
@@ -88,10 +97,12 @@ Agent Skills are portable folders of instructions, scripts, and resources that A
 - Personal skills: `~/.copilot/skills/<skill-name>/SKILL.md` (recommended) or `~/.claude/skills/<skill-name>/SKILL.md` (legacy)
 
 SKILL.md frontmatter:
+
 - `name` (required): Unique identifier, lowercase with hyphens, max 64 chars (e.g., `webapp-testing`)
 - `description` (required): What the skill does and when to use it, max 1024 chars. Be specific to help Copilot decide when to load.
 
 Skill body should include:
+
 - What the skill accomplishes
 - When to use it (specific triggers and use cases)
 - Step-by-step procedures
@@ -117,7 +128,7 @@ VS Code supports **context-isolated subagents** via the `runSubagent` tool. To u
 
 - Ensure `runSubagent` is enabled (either via the tools picker, or via `tools: [...]` in the agent/prompt frontmatter).
 - If you want a subagent to run as a *specific custom agent*, enable the experimental setting `chat.customAgentInSubagent.enabled`.
-- A custom agent can be blocked from subagent usage by setting `infer: false` in its `*.agent.md` frontmatter.
+- A custom agent can be blocked from subagent usage by setting `disable-model-invocation: true` in its `*.agent.md` frontmatter.
 
 ### Handoffs (VS Code)
 
@@ -127,39 +138,43 @@ VS Code custom agents support a `handoffs:` frontmatter property to guide users 
 
 Some frontmatter fields have different behavior depending on where the agent runs.
 
-- `infer`:
-   - In **VS Code**, `infer` controls whether the agent can be used as a subagent (defaults to `true`).
-   - In **GitHub Copilot coding agent**, `infer: false` disables automatic agent selection (the agent must be chosen manually).
+- `user-invokable` / `disable-model-invocation`:
+  - In **VS Code**, these separately control picker visibility and subagent availability.
+  - In **GitHub Copilot coding agent**, `disable-model-invocation: true` disables automatic agent selection.
 - `handoffs`:
-   - Supported in **VS Code**.
-   - Currently **ignored** by **GitHub Copilot coding agent** for compatibility.
+  - Supported in **VS Code**.
+  - Currently **ignored** by **GitHub Copilot coding agent** for compatibility.
+- `mcp-servers`:
+  - Used by **GitHub Copilot coding agent** (`target: github-copilot`) to configure MCP servers.
+  - In **VS Code**, MCP servers are configured via `mcp.json` or VS Code settings.
 
 ## Reference docs
 
-- VS Code Copilot overview: https://code.visualstudio.com/docs/copilot/overview
-- Customize chat overview: https://code.visualstudio.com/docs/copilot/customization/overview
-- Custom agents (VS Code): https://code.visualstudio.com/docs/copilot/customization/custom-agents
-- Prompt files (VS Code): https://code.visualstudio.com/docs/copilot/customization/prompt-files
-- Custom instructions (VS Code): https://code.visualstudio.com/docs/copilot/customization/custom-instructions
-- Agent Skills (VS Code): https://code.visualstudio.com/docs/copilot/customization/agent-skills
-- Agent Skills standard: https://agentskills.io/
-- Language models (VS Code): https://code.visualstudio.com/docs/copilot/customization/language-models
-- MCP servers (VS Code): https://code.visualstudio.com/docs/copilot/customization/mcp-servers
-- Chat tools & approvals (VS Code): https://code.visualstudio.com/docs/copilot/chat/chat-tools
-- Chat sessions (VS Code): https://code.visualstudio.com/docs/copilot/chat/chat-sessions
-- Manage context (VS Code): https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context
-- Copilot feature reference / cheat sheet (VS Code): https://code.visualstudio.com/docs/copilot/reference/copilot-vscode-features
-- Agents overview (local/background/cloud): https://code.visualstudio.com/docs/copilot/agents/overview
-- Background agents: https://code.visualstudio.com/docs/copilot/agents/background-agents
-- Cloud agents: https://code.visualstudio.com/docs/copilot/agents/cloud-agents
-- Context engineering guide: https://code.visualstudio.com/docs/copilot/guides/context-engineering-guide
-- Prompt engineering guide: https://code.visualstudio.com/docs/copilot/guides/prompt-engineering-guide
-- Security considerations (VS Code): https://code.visualstudio.com/docs/copilot/security
-- Subagents / chat sessions (VS Code): https://code.visualstudio.com/docs/copilot/chat/chat-sessions
+- VS Code Copilot overview: <https://code.visualstudio.com/docs/copilot/overview>
+- Customize chat overview: <https://code.visualstudio.com/docs/copilot/customization/overview>
+- Custom agents (VS Code): <https://code.visualstudio.com/docs/copilot/customization/custom-agents>
+- Prompt files (VS Code): <https://code.visualstudio.com/docs/copilot/customization/prompt-files>
+- Custom instructions (VS Code): <https://code.visualstudio.com/docs/copilot/customization/custom-instructions>
+- Agent Skills (VS Code): <https://code.visualstudio.com/docs/copilot/customization/agent-skills>
+- Agent Skills standard: <https://agentskills.io/>
+- Language models (VS Code): <https://code.visualstudio.com/docs/copilot/customization/language-models>
+- MCP servers (VS Code): <https://code.visualstudio.com/docs/copilot/customization/mcp-servers>
+- Chat tools & approvals (VS Code): <https://code.visualstudio.com/docs/copilot/chat/chat-tools>
+- Chat sessions (VS Code): <https://code.visualstudio.com/docs/copilot/chat/chat-sessions>
+- Manage context (VS Code): <https://code.visualstudio.com/docs/copilot/chat/copilot-chat-context>
+- Copilot feature reference / cheat sheet (VS Code): <https://code.visualstudio.com/docs/copilot/reference/copilot-vscode-features>
+- Agents overview (local/background/cloud): <https://code.visualstudio.com/docs/copilot/agents/overview>
+- Background agents: <https://code.visualstudio.com/docs/copilot/agents/background-agents>
+- Cloud agents: <https://code.visualstudio.com/docs/copilot/agents/cloud-agents>
+- Context engineering guide: <https://code.visualstudio.com/docs/copilot/guides/context-engineering-guide>
+- Prompt engineering guide: <https://code.visualstudio.com/docs/copilot/guides/prompt-engineering-guide>
+- Security considerations (VS Code): <https://code.visualstudio.com/docs/copilot/security>
+- Subagents / chat sessions (VS Code): <https://code.visualstudio.com/docs/copilot/chat/chat-sessions>
 
 GitHub Copilot (cloud) custom agents:
-- Creating custom agents (GitHub docs): https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents
-- Custom agents configuration (GitHub reference): https://docs.github.com/en/copilot/reference/custom-agents-configuration
+
+- Creating custom agents (GitHub docs): <https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/create-custom-agents>
+- Custom agents configuration (GitHub reference): <https://docs.github.com/en/copilot/reference/custom-agents-configuration>
 
 ## Deliverables style
 

@@ -1,0 +1,117 @@
+name: Sync to Template Repo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/agents/**"
+      - ".github/prompts/**"
+      - ".github/skills/**"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/validate.yml"
+      - ".github/workflows/commit-lint.yml"
+      - ".github/copilot-instructions.md"
+      - ".githooks/**"
+      - ".vscode/**"
+      - ".markdownlint.json"
+      - "scripts/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout blueprint
+        uses: actions/checkout@v6
+        with:
+          path: blueprint
+
+      - name: Checkout template
+        uses: actions/checkout@v6
+        with:
+          repository: trsdn/github-copilot-agent-template
+          token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+          path: template
+
+      - name: Sync files
+        run: |
+          # Files/directories to sync from blueprint to template
+          SYNC_DIRS=(
+            ".github/agents"
+            ".github/prompts"
+            ".github/skills"
+            ".github/copilot-instructions.md"
+            ".githooks"
+            ".vscode"
+            "scripts"
+          )
+
+          SYNC_FILES=(
+            ".github/workflows/release.yml"
+            ".github/workflows/validate.yml"
+            ".github/workflows/commit-lint.yml"
+            ".markdownlint.json"
+          )
+
+          # Sync directories (mirror content)
+          for dir in "${SYNC_DIRS[@]}"; do
+            if [ -e "blueprint/$dir" ]; then
+              # Remove target first to handle deletions
+              rm -rf "template/$dir"
+              mkdir -p "$(dirname "template/$dir")"
+              cp -r "blueprint/$dir" "template/$dir"
+              echo "✓ Synced $dir"
+            fi
+          done
+
+          # Sync individual files
+          for file in "${SYNC_FILES[@]}"; do
+            if [ -f "blueprint/$file" ]; then
+              mkdir -p "$(dirname "template/$file")"
+              cp "blueprint/$file" "template/$file"
+              echo "✓ Synced $file"
+            fi
+          done
+
+          # Ensure scripts are executable
+          chmod +x template/.githooks/* 2>/dev/null || true
+          chmod +x template/scripts/* 2>/dev/null || true
+
+      - name: Check for changes
+        id: changes
+        working-directory: template
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to sync"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --stat
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          path: template
+          token: ${{ secrets.TEMPLATE_SYNC_TOKEN }}
+          commit-message: "chore: sync from blueprint repo"
+          title: "chore: sync customizations from blueprint"
+          body: |
+            Automated sync from [github-copilot-agent](https://github.com/trsdn/github-copilot-agent).
+
+            This PR was created automatically when template-relevant files changed in the blueprint repo.
+
+            **Synced paths:**
+            - `.github/agents/`, `.github/prompts/`, `.github/skills/`
+            - `.github/workflows/` (release, validate, commit-lint)
+            - `.github/copilot-instructions.md`
+            - `.githooks/`, `scripts/`
+            - `.vscode/`, `.markdownlint.json`
+          branch: sync-from-blueprint
+          delete-branch: true

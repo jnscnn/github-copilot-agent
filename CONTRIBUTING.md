@@ -58,15 +58,21 @@ git clone https://github.com/YOUR-USERNAME/github-copilot-agent.git
 cd github-copilot-agent
 ```
 
-2. **Open in VS Code**
+1. **Open in VS Code**
 
 ```bash
 code .
 ```
 
-3. **Ensure you have the required extensions**:
+1. **Ensure you have the required extensions**:
    - GitHub Copilot
    - GitHub Copilot Chat
+
+2. **Set up git hooks** (enforces Conventional Commits locally):
+
+```bash
+./scripts/setup-hooks.sh
+```
 
 ## Contribution Guidelines
 
@@ -173,33 +179,45 @@ input:
 git checkout -b feature/your-feature-name
 ```
 
-2. **Make your changes**
+1. **Make your changes**
    - Follow the style guidelines
    - Test thoroughly
    - Update documentation as needed
 
-3. **Commit your changes**
+2. **Commit your changes**
 
 ```bash
 git add .
 git commit -m "feat: add new skill for X"
 ```
 
-Use conventional commit messages:
-- `feat:` - New features
-- `fix:` - Bug fixes
-- `docs:` - Documentation changes
-- `refactor:` - Code refactoring
-- `test:` - Test additions/changes
-- `chore:` - Maintenance tasks
+> **Important:** This repository enforces [Conventional Commits](https://www.conventionalcommits.org/).
+> A local git hook and CI check will reject non-conforming commit messages.
 
-4. **Push to your fork**
+Use conventional commit messages:
+
+- `feat:` - New features (triggers **minor** version bump)
+- `fix:` - Bug fixes (triggers **patch** version bump)
+- `feat!:` or `BREAKING CHANGE:` - Breaking changes (triggers **major** version bump)
+- `docs:` - Documentation changes
+- `style:` - Formatting, no code change
+- `refactor:` - Code restructuring
+- `perf:` - Performance improvements
+- `test:` - Test additions/changes
+- `build:` - Build system changes
+- `ci:` - CI configuration changes
+- `chore:` - Maintenance tasks
+- `revert:` - Reverting a previous commit
+
+Optional scope in parentheses: `feat(agents): add new debugging agent`
+
+1. **Push to your fork**
 
 ```bash
 git push origin feature/your-feature-name
 ```
 
-5. **Open a Pull Request**
+1. **Open a Pull Request**
    - Use a clear, descriptive title
    - Reference any related issues
    - Describe what changed and why
